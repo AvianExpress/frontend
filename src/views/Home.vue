@@ -54,6 +54,7 @@ export default {
         this.selected = items;
       },
       async change(){
+        console.log(this.selected);
         await axios.put('resp/'+this.selected.id, this.selected);
       }
       
