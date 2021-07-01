@@ -24,17 +24,18 @@
  </b-table>
     </b-container>
 <div>
+  
   <b-input-group prepend="Changefolder" class="mb-2">
-    <b-form-input aria-label="Firstname" :value="selected[0].name" placeholder="Firstname"></b-form-input>
-    <b-form-input aria-label="Lastname" :value="selected[0].surname" placeholder="Lastname"></b-form-input>
-    <b-form-input aria-label="Phone" :value="selected[0].phone" placeholder="Phone"></b-form-input>
-    <!--<b-form-input aria-label="Address" :value="selected[0].address" enable=false placeholder="Address"></b-form-input>-->
+    <b-form-input aria-label="Firstname" v-model="selected[0].name" placeholder="Firstname" id="Firstname"></b-form-input>
+    <b-form-input aria-label="Lastname" v-model="selected[0].surname" placeholder="Lastname"></b-form-input>
+    <b-form-input aria-label="Phone" v-model="selected[0].phone" placeholder="Phone"></b-form-input>
+    <!--<b-form-input aria-label="Address" v-model="selected[0].address" enable=false placeholder="Address"></b-form-input>-->
     <b-button size="" text="Button" variant="success" v-on:click="change">Change</b-button>
   </b-input-group>
 </div>
   </div>
-  <h3>{{ selected}}</h3>
-
+ <!-- <h3>{{ selected}}</h3>
+  <h3>'{{selected[0].name}}'</h3>-->
   <button class="button" v-on:click="logout">LogOut</button>
   </div>
 </template>
@@ -52,10 +53,13 @@ export default {
     },
     onRowSelected(items) {
         this.selected = items;
+        
       },
       async change(){
-        console.log(this.selected);
-        await axios.put('resp/'+this.selected.id, this.selected);
+        //console.log(this.selected[0].name)
+        this.selected[0].id =
+        await axios.put('resp/'+this.selected[0].id, this.selected);
+        this.$router.go()
       }
       
   },
@@ -64,6 +68,7 @@ export default {
   data(){
     return {
       users: null,
+      Firstname: '',
       selected:[{
         id: "",
         name:"",
