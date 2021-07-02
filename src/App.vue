@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Главная</router-link> | <router-link to="/login">Login</router-link> 
-      | <router-link to="/registration">Registration</router-link>
+      | <router-link to="/registration">Registration</router-link> | <router-link to="/Create">Creation</router-link>
      
       
     </div>

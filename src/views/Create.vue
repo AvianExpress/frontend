@@ -10,63 +10,22 @@
     <li :key="user.phone">Имя: {{user.name}} Телефон: {{user.phone}}</li>
     </template>
     <template>
-      
     </template>
   </ul>
   
   </div>
    <div>
-    <b-container fluid>
-      
-    <b-table
 
-    :items="users"
-    :fields="fields"
-    :select-mode="seletMode"
-      :filter="filter"
-      :filter-included-fields="filterOn"
-     responsive="sm"
-     ref="selectableTable"
-     selectable
-    @filtered="onFiltered"
-    @row-selected="onRowSelected">
-<template slot="top-row">
-    
-     <b-row>
-      <b-col lg="10" class="my-1">
-        <b-form-group>
-          <b-input-group>
-            <b-form-input
-              id="filter-input"
-              v-model="filter"
-              type="search"
-              placeholder="ИМЯ, НАЗОВИТЕ ИМЯ"
-            ></b-form-input>
-
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-          </b-row>
-</template>
-    
- </b-table>
-
- 
-    </b-container>
 <div>
   
   <b-input-group prepend="Changefolder" class="mb-3">
-    <b-form-input aria-label="Firstname" v-model="selected[0].name" placeholder="Имя" id="Firstname"></b-form-input>
-    <b-form-input aria-label="Lastname" v-model="selected[0].surname" placeholder="Мыло"></b-form-input>
-    <b-form-input aria-label="Phone" v-model="selected[0].phone" placeholder="Phone"></b-form-input>
+    <b-form-input aria-label="Firstname" v-model="name" placeholder="Имя" id="Firstname"></b-form-input>
+    <b-form-input aria-label="Lastname" v-model="surname" placeholder="Мыло"></b-form-input>
+    <b-form-input aria-label="Phone" v-model="phone" placeholder="Phone"></b-form-input>
     <!--  <b-form-input aria-label="Address" v-model="selected[0].address" enable=false placeholder="Address"></b-form-input>-->
   </b-input-group>
-  <b-button  size="" text="Button" variant="success" v-on:click="change">Change</b-button>
-  <b-button size="" text="Button" variant="attention" v-on:click="add">Add</b-button>
-  <b-button size="" text="Button" variant="attention" v-on:click="del">Delete</b-button>
+  <b-button size="" text="Button" variant="success" v-on:click="change">Add</b-button>
+  <b-button size="" text="Button" variant="attention" v-on:click="created">Exit</b-button>
 </div>
   </div>
  <!-- <h3>{{ selected}}</h3>
@@ -78,13 +37,10 @@
 
 <script>
 import axios from 'axios'
-import { randomInt } from 'crypto';
-
 export default {
   name: 'home',
   methods: {
-       onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
+       onFiltered(filteredItems) {     
         this.totalRows = filteredItems.length;
         console.log(this.totalRows);
         this.currentPage = 1;
@@ -106,22 +62,16 @@ export default {
     },
     onRowSelected(items) {
         this.selected = items;
+        console.log(items)
       },
       async change(){
-        
         this.selected[0].id =
-        await axios.put('resp/'+this.selected[0].id, this.selected);
+        await axios.put('resp/'+this.id, this.selected);
         this.$router.go()
       },
       async add(){
-        this.selected[0].id = randomInt;
-        await axios.post('resp/'+this.selected[0].id, this.selected);
-        this.$router.go()
-      },
-      async del(){
-        this.selected[0].id 
-        await axios.delete('resp/'+this.selected[0].id, this.selected);
-        this.$router.go()
+
+        this.$router.push('/')
       }
       
   },
@@ -141,24 +91,20 @@ export default {
       }],
       seletMode: 'single',
       name: "1",
-      
       fields:[
-          { key: 'name', label: 'First name', sortable: true, sortDirection: 'desc'},
+          { key: 'name', label: 'First name', sortable: true, sortDirection: 'desc' },
           { key: 'surname', label: 'Last name', sortable: true, class: 'text-center' },
           { key: 'phone', label: 'Phone', sortable: true, class: 'text-center' },
           //{ key: 'address', label: 'Person address', sortable: true, class: 'text-center', readonly: true },
       ],
         sortBy: '',
-        filterByColumn: true,
         sortDesc: false,
         sortDirection: 'asc',
         filter: null,
-        filterOn: ["name"],
     }
-
   },
   computed: {
-     sortOptions() {
+      sortOptions() {
         // Create an options list from our fields
         return this.fields
           .filter(f => f.sortable)
@@ -166,7 +112,6 @@ export default {
             return { text: f.label, value: f.key }
           })
       }
-    
     },
 
   async created(){

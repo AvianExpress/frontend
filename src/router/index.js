@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Registration from '../views/Registration.vue'
 import Users from '../views/Users.vue'
+import creation from '../views/Create.vue'
 
 Vue.use(VueRouter)
 
@@ -32,7 +33,13 @@ const routes = [
     name: 'users',
     component: Users
 
+  },
+  {
+  path: '/create',
+  name: 'create',
+  component: creation,
   }
+
 
 ]
 
